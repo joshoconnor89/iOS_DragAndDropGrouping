@@ -11,7 +11,7 @@ import UIKit
 class GroupingTableViewController: UITableViewController {
     
     var teamDictionary: [Int : String] = [:]
-    var foldersList: [String : [String]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
+    var foldersList: [String : [Cell]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
     var itemsArray : [String]
     var finishedMovingItem: Bool = true
     var cellBeingMoved: Cell?
@@ -129,13 +129,15 @@ class GroupingTableViewController: UITableViewController {
                     cell?.backgroundColor = UIColor.lightGray
                     previousHighlightedCell = cell
                     self.tableView.reloadRows(at: [Path.initialIndexPath!], with: .automatic)
+                }else if (indexPath == nil){
+                    previousHighlightedCell?.backgroundColor = UIColor.clear
                 }
             }
         default:
             if Path.initialIndexPath != nil {
                 finishedMovingItem = true
                 previousHighlightedCell?.backgroundColor = UIColor.clear
-                if (indexPath != nil) {
+                if (indexPath != nil && (indexPath != Path.initialIndexPath)) {
                     
                     
                     // folderID : [teams]
@@ -157,26 +159,66 @@ class GroupingTableViewController: UITableViewController {
                                 print("            previousHighlightedCell-> \(self.previousHighlightedCell?.teamLabel.text)")
                                 
                                 confirmFollowingAlertView.removeFromSuperview()
-                                self.itemsArray.insert(self.itemsArray.remove(at: (Path.initialIndexPath! as NSIndexPath).row), at: (indexPath! as NSIndexPath).row)
-                                self.tableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
-                                self.tableView.reloadData()
-                                Path.initialIndexPath = indexPath
                                 
-                                let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
-                                
-                                UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                                    CellBeingMoved.cellSnapshot!.center = (cell?.center)!
-                                    CellBeingMoved.cellSnapshot!.transform = CGAffineTransform.identity
-                                    CellBeingMoved.cellSnapshot!.alpha = 0.0
-                                    cell?.alpha = 1.0
+                                if (self.foldersList[folderName] == nil) {
+                                    self.foldersList[folderName] = [self.cellBeingMoved!, self.previousHighlightedCell!]
+                                    print("Folders list:\(self.foldersList)")
                                     
-                                    }, completion: { (finished) -> Void in
-                                        if finished {
-                                            Path.initialIndexPath = nil
-                                            CellBeingMoved.cellSnapshot!.removeFromSuperview()
-                                            CellBeingMoved.cellSnapshot = nil
-                                        }
-                                })
+                                    self.itemsArray.remove(at: (Path.initialIndexPath! as NSIndexPath).row)
+                                    self.itemsArray.remove(at: self.tableView.indexPath(for: self.previousHighlightedCell!)!.row)
+
+                                    
+                                    if let teamBeingMoved = self.cellBeingMoved?.teamLabel.text, let teamSelected = self.previousHighlightedCell?.teamLabel.text {
+                                         self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: (indexPath! as NSIndexPath).row)
+                                    }
+                                   
+                                    self.tableView.reloadData()
+                                    Path.initialIndexPath = indexPath
+                                    
+                                    let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
+                                    
+                                    UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                                        CellBeingMoved.cellSnapshot!.center = (cell?.center)!
+                                        CellBeingMoved.cellSnapshot!.transform = CGAffineTransform.identity
+                                        CellBeingMoved.cellSnapshot!.alpha = 0.0
+                                        cell?.alpha = 1.0
+                                        
+                                        }, completion: { (finished) -> Void in
+                                            if finished {
+                                                Path.initialIndexPath = nil
+                                                CellBeingMoved.cellSnapshot!.removeFromSuperview()
+                                                CellBeingMoved.cellSnapshot = nil
+                                            }
+                                    })
+
+                                }
+                                
+                                
+                                
+                                
+   
+                                
+                                
+//                                self.itemsArray.insert(self.itemsArray.remove(at: (Path.initialIndexPath! as NSIndexPath).row), at: (indexPath! as NSIndexPath).row)
+//                                self.tableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
+//                                self.tableView.reloadData()
+//                                Path.initialIndexPath = indexPath
+//                                
+//                                let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
+//                                
+//                                UIView.animate(withDuration: 0.25, animations: { () -> Void in
+//                                    CellBeingMoved.cellSnapshot!.center = (cell?.center)!
+//                                    CellBeingMoved.cellSnapshot!.transform = CGAffineTransform.identity
+//                                    CellBeingMoved.cellSnapshot!.alpha = 0.0
+//                                    cell?.alpha = 1.0
+//                                    
+//                                    }, completion: { (finished) -> Void in
+//                                        if finished {
+//                                            Path.initialIndexPath = nil
+//                                            CellBeingMoved.cellSnapshot!.removeFromSuperview()
+//                                            CellBeingMoved.cellSnapshot = nil
+//                                        }
+//                                })
                             }
                         }else if confirmed ==  true && folderName == nil {
                             let alertController = UIAlertController(title: "Whoops!", message: "Please input a folder name.", preferredStyle: .alert)
