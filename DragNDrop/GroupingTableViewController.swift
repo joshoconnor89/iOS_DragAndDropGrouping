@@ -11,7 +11,7 @@ import UIKit
 class GroupingTableViewController: UITableViewController {
     
     var teamDictionary: [Int : String] = [:]
-    var foldersList: [String : [Cell]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
+    var foldersList: [String : [String]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
     var itemsArray : NSMutableArray
     var finishedMovingItem: Bool = true
     var cellBeingMoved: Cell?
@@ -161,15 +161,16 @@ class GroupingTableViewController: UITableViewController {
                                 confirmFollowingAlertView.removeFromSuperview()
                                 
                                 if (self.foldersList[folderName] == nil) {
-                                    self.foldersList[folderName] = [self.cellBeingMoved!, self.previousHighlightedCell!]
+                                    self.foldersList[folderName] = [self.cellBeingMoved!.teamLabel.text!, self.previousHighlightedCell!.teamLabel.text!]
                                     print("Folders list:\(self.foldersList)")
                                     
                                     if let teamBeingMoved = self.cellBeingMoved?.teamLabel.text, let teamSelected = self.previousHighlightedCell?.teamLabel.text {
-                                    
+                                        
+                                        self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: self.tableView.indexPath(for: self.previousHighlightedCell!)!.row)
                                         self.itemsArray.remove(teamBeingMoved)
                                         self.itemsArray.remove(teamSelected)
 
-                                        self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: self.tableView.indexPath(for: self.previousHighlightedCell!)!.row)
+                                        
                                         
                                     }
                                     self.tableView.reloadData()
@@ -177,8 +178,12 @@ class GroupingTableViewController: UITableViewController {
                                     
                                     let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
                                     
+                                    
                                     UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                                        CellBeingMoved.cellSnapshot!.center = (cell?.center)!
+                                        if let cell = cell{
+                                            CellBeingMoved.cellSnapshot!.center = cell.center
+                                        }
+                                        
                                         CellBeingMoved.cellSnapshot!.transform = CGAffineTransform.identity
                                         CellBeingMoved.cellSnapshot!.alpha = 0.0
                                         cell?.alpha = 1.0
@@ -288,7 +293,17 @@ class GroupingTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if ((itemsArray[(indexPath as NSIndexPath).row] as AnyObject).hasPrefix("Folder:")){
             let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderCell
-           
+            
+            for item in foldersList {
+                let teams = item.1
+                for team in teams {
+                    if ((itemsArray[(indexPath as NSIndexPath).row] as? String)?.contains(team))! {
+                        cell.folderName.text = item.0
+                    }
+                }
+                
+            }
+            cell.contents = itemsArray[(indexPath as NSIndexPath).row] as? String
             return cell
         }
         else{
@@ -301,6 +316,17 @@ class GroupingTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        
+        switch selectedCell {
+            case let teamCell as Cell:
+                print("do nothing!")
+            case let folderCell as FolderCell:
+                print("Expand cell!")
+            default:
+                break
+            
+        }
     }
     
     

@@ -10,11 +10,17 @@ import UIKit
 
 class FolderCell: UITableViewCell {
     
-
+    var contents: String?
+    
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     @IBOutlet weak var folderName: UILabel!
 
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        print(contents)
+       
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
