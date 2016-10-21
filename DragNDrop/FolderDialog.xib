@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11521.1" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11517.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FolderDialog" customModule="DragNDrop" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="Ylw-hC-lya" id="KpG-Ew-afA"/>
+                <outlet property="folderNameTextfield" destination="dYk-3M-fiO" id="rmc-27-SAG"/>
+                <outlet property="saveButton" destination="BKA-Yc-uHJ" id="PAw-GZ-hHG"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="290" height="180"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Folder Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="grZ-5B-hw8">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="103" id="RNM-LE-foj"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dYk-3M-fiO">
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="Ndy-7m-a2T"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ylw-hC-lya">
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="pPV-by-O7J"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create folder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPn-mW-QEB">
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                    <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKA-Yc-uHJ">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="J1f-Ln-a5M"/>
+                        <constraint firstAttribute="width" constant="130" id="p40-8b-Cxr"/>
+                    </constraints>
+                    <state key="normal" title="Save">
+                        <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="XYz-us-Qpy"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.58431372550000005" green="0.3921568627" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="BKA-Yc-uHJ" secondAttribute="trailing" constant="5" id="9Ad-7a-hzS"/>
+                <constraint firstItem="GPn-mW-QEB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="A9w-og-Xhi"/>
+                <constraint firstItem="dYk-3M-fiO" firstAttribute="centerY" secondItem="grZ-5B-hw8" secondAttribute="centerY" id="CfI-uu-H20"/>
+                <constraint firstItem="grZ-5B-hw8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="FFO-mr-obV"/>
+                <constraint firstItem="Ylw-hC-lya" firstAttribute="height" secondItem="BKA-Yc-uHJ" secondAttribute="height" id="FRf-9j-DgZ"/>
+                <constraint firstItem="dYk-3M-fiO" firstAttribute="leading" secondItem="grZ-5B-hw8" secondAttribute="trailing" constant="11" id="SGQ-Q7-tQc"/>
+                <constraint firstItem="grZ-5B-hw8" firstAttribute="top" secondItem="GPn-mW-QEB" secondAttribute="bottom" constant="28" id="Sny-Ar-vAm"/>
+                <constraint firstItem="GPn-mW-QEB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="UoJ-Vv-f9w"/>
+                <constraint firstAttribute="bottom" secondItem="Ylw-hC-lya" secondAttribute="bottom" constant="5" id="VvF-nU-oGc"/>
+                <constraint firstAttribute="trailing" secondItem="GPn-mW-QEB" secondAttribute="trailing" constant="15" id="Z1s-SG-8my"/>
+                <constraint firstAttribute="bottom" secondItem="BKA-Yc-uHJ" secondAttribute="bottom" constant="5" id="a6s-68-fRp"/>
+                <constraint firstItem="Ylw-hC-lya" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="mtV-1t-A2E"/>
+                <constraint firstItem="Ylw-hC-lya" firstAttribute="width" secondItem="BKA-Yc-uHJ" secondAttribute="width" id="xSb-No-fr7"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-482" y="-70"/>
+        </view>
+    </objects>
+</document>
