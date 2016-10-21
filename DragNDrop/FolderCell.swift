@@ -12,6 +12,7 @@ class FolderCell: UITableViewCell {
     
 
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var folderName: UILabel!
 
 
     

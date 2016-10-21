@@ -17,11 +17,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Grouped Teams" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F47-RB-Du1">
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                         <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="basket" translatesAutoresizingMaskIntoConstraints="NO" id="wGL-lP-dSe">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="folder_icon" translatesAutoresizingMaskIntoConstraints="NO" id="wGL-lP-dSe">
                         <constraints>
                             <constraint firstAttribute="height" constant="32.5" id="7GQ-vh-MqY"/>
                             <constraint firstAttribute="width" constant="33" id="bkg-vI-EIy"/>
@@ -49,7 +49,7 @@
                     <constraint firstItem="wGL-lP-dSe" firstAttribute="top" secondItem="7wE-cL-APD" secondAttribute="top" constant="5" id="Rg6-QC-f2g"/>
                     <constraint firstAttribute="bottom" secondItem="Kwd-Z5-e1f" secondAttribute="bottom" constant="-1.5" id="jJw-8U-Wfb"/>
                     <constraint firstAttribute="trailing" secondItem="Kwd-Z5-e1f" secondAttribute="trailing" id="nYr-MA-zOg"/>
-                    <constraint firstItem="F47-RB-Du1" firstAttribute="leading" secondItem="wGL-lP-dSe" secondAttribute="trailing" constant="30" id="ocA-g1-0Wc"/>
+                    <constraint firstItem="F47-RB-Du1" firstAttribute="leading" secondItem="wGL-lP-dSe" secondAttribute="trailing" constant="13" id="ocA-g1-0Wc"/>
                     <constraint firstAttribute="trailingMargin" secondItem="vfh-Jt-QhR" secondAttribute="trailing" constant="9" id="sRE-WP-uSG"/>
                     <constraint firstItem="F47-RB-Du1" firstAttribute="top" secondItem="7wE-cL-APD" secondAttribute="topMargin" constant="3" id="sfp-bS-Pug"/>
                     <constraint firstItem="Kwd-Z5-e1f" firstAttribute="leading" secondItem="7wE-cL-APD" secondAttribute="leading" id="ySa-fT-8SY"/>
@@ -57,12 +57,13 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="collectionViewHeight" destination="hua-NY-rcU" id="Uu5-Tf-WZt"/>
+                <outlet property="folderName" destination="F47-RB-Du1" id="ZMM-Ec-FKI"/>
             </connections>
             <point key="canvasLocation" x="-244.5" y="21"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="basket" width="512" height="512"/>
         <image name="down_arrow" width="313" height="313"/>
+        <image name="folder_icon" width="212" height="262"/>
     </resources>
 </document>

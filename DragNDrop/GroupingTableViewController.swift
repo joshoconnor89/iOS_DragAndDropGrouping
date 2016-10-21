@@ -12,14 +12,14 @@ class GroupingTableViewController: UITableViewController {
     
     var teamDictionary: [Int : String] = [:]
     var foldersList: [String : [Cell]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
-    var itemsArray : [String]
+    var itemsArray : NSMutableArray
     var finishedMovingItem: Bool = true
     var cellBeingMoved: Cell?
     var previousHighlightedCell: Cell?
     fileprivate var lastInitialIndexPath : IndexPath? = nil
     
     required init(coder aDecoder: NSCoder) {
-        itemsArray = [String]()
+        itemsArray = NSMutableArray()
         
         let item1 = "San Francisco 49ers"
         let item2 = "Carolina Panthers"
@@ -32,16 +32,16 @@ class GroupingTableViewController: UITableViewController {
         let item9 = "Seattle Seahawks"
         let item10 = "Arizona Cardinals"
         
-        itemsArray.append(item1)
-        itemsArray.append(item2)
-        itemsArray.append(item3)
-        itemsArray.append(item4)
-        itemsArray.append(item5)
-        itemsArray.append(item6)
-        itemsArray.append(item7)
-        itemsArray.append(item8)
-        itemsArray.append(item9)
-        itemsArray.append(item10)
+        itemsArray.add(item1)
+        itemsArray.add(item2)
+        itemsArray.add(item3)
+        itemsArray.add(item4)
+        itemsArray.add(item5)
+        itemsArray.add(item6)
+        itemsArray.add(item7)
+        itemsArray.add(item8)
+        itemsArray.add(item9)
+        itemsArray.add(item10)
         
         super.init(coder: aDecoder)!
     }
@@ -51,7 +51,7 @@ class GroupingTableViewController: UITableViewController {
         
         for i in 0..<itemsArray.count {
             if teamDictionary[i] == nil {
-                teamDictionary[i] = itemsArray[i]
+                teamDictionary[i] = String(describing: itemsArray[i])
             }
         }
         print(teamDictionary)
@@ -164,14 +164,14 @@ class GroupingTableViewController: UITableViewController {
                                     self.foldersList[folderName] = [self.cellBeingMoved!, self.previousHighlightedCell!]
                                     print("Folders list:\(self.foldersList)")
                                     
-                                    self.itemsArray.remove(at: (Path.initialIndexPath! as NSIndexPath).row)
-                                    self.itemsArray.remove(at: self.tableView.indexPath(for: self.previousHighlightedCell!)!.row)
-
-                                    
                                     if let teamBeingMoved = self.cellBeingMoved?.teamLabel.text, let teamSelected = self.previousHighlightedCell?.teamLabel.text {
-                                         self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: (indexPath! as NSIndexPath).row)
+                                    
+                                        self.itemsArray.remove(teamBeingMoved)
+                                        self.itemsArray.remove(teamSelected)
+
+                                        self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: self.tableView.indexPath(for: self.previousHighlightedCell!)!.row)
+                                        
                                     }
-                                   
                                     self.tableView.reloadData()
                                     Path.initialIndexPath = indexPath
                                     
@@ -286,9 +286,17 @@ class GroupingTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
-        cell.teamLabel.text = itemsArray[(indexPath as NSIndexPath).row]
-        return cell
+        if ((itemsArray[(indexPath as NSIndexPath).row] as AnyObject).hasPrefix("Folder:")){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderCell
+           
+            return cell
+        }
+        else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
+            cell.teamLabel.text = String(describing: itemsArray[(indexPath as NSIndexPath).row])
+            return cell
+
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
