@@ -198,32 +198,6 @@ class GroupingTableViewController: UITableViewController {
 
                                 }
                                 
-                                
-                                
-                                
-   
-                                
-                                
-//                                self.itemsArray.insert(self.itemsArray.remove(at: (Path.initialIndexPath! as NSIndexPath).row), at: (indexPath! as NSIndexPath).row)
-//                                self.tableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
-//                                self.tableView.reloadData()
-//                                Path.initialIndexPath = indexPath
-//                                
-//                                let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
-//                                
-//                                UIView.animate(withDuration: 0.25, animations: { () -> Void in
-//                                    CellBeingMoved.cellSnapshot!.center = (cell?.center)!
-//                                    CellBeingMoved.cellSnapshot!.transform = CGAffineTransform.identity
-//                                    CellBeingMoved.cellSnapshot!.alpha = 0.0
-//                                    cell?.alpha = 1.0
-//                                    
-//                                    }, completion: { (finished) -> Void in
-//                                        if finished {
-//                                            Path.initialIndexPath = nil
-//                                            CellBeingMoved.cellSnapshot!.removeFromSuperview()
-//                                            CellBeingMoved.cellSnapshot = nil
-//                                        }
-//                                })
                             }
                         }else if confirmed ==  true && folderName == nil {
                             let alertController = UIAlertController(title: "Whoops!", message: "Please input a folder name.", preferredStyle: .alert)
@@ -287,29 +261,42 @@ class GroupingTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemsArray.count
+        if let cv = tableView as? IndexedTableView {
+            return 2
+        }else{
+            return itemsArray.count
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if ((itemsArray[(indexPath as NSIndexPath).row] as AnyObject).hasPrefix("Folder:")){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderCell
+        if let cv = tableView as? IndexedTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
+            return cell
+
+        }else{
             
-            for item in foldersList {
-                let teams = item.1
-                for team in teams {
-                    if ((itemsArray[(indexPath as NSIndexPath).row] as? String)?.contains(team))! {
-                        cell.folderName.text = item.0
+            if ((itemsArray[(indexPath as NSIndexPath).row] as AnyObject).hasPrefix("Folder:")){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderCell
+                
+                for item in foldersList {
+                    let teams = item.1
+                    for team in teams {
+                        if ((itemsArray[(indexPath as NSIndexPath).row] as? String)?.contains(team))! {
+                            cell.folderName.text = item.0
+                            cell.contents = item.1
+                        }
                     }
+                    
                 }
+                return cell
+            }
+            else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
+                cell.teamLabel.text = String(describing: itemsArray[(indexPath as NSIndexPath).row])
+                return cell
                 
             }
-            cell.contents = itemsArray[(indexPath as NSIndexPath).row] as? String
-            return cell
-        }
-        else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
-            cell.teamLabel.text = String(describing: itemsArray[(indexPath as NSIndexPath).row])
-            return cell
 
         }
     }
@@ -323,6 +310,9 @@ class GroupingTableViewController: UITableViewController {
                 print("do nothing!")
             case let folderCell as FolderCell:
                 print("Expand cell!")
+                folderCell.tableView.dataSource = self
+                folderCell.tableView.delegate = self
+                populateTableView(folderCell)
             default:
                 break
             
@@ -341,6 +331,12 @@ class GroupingTableViewController: UITableViewController {
             }
         }
 
+    }
+    
+    func populateTableView(_ cell: AnyObject) {
+        if cell is FolderCell {
+            
+        }
     }
 }
 

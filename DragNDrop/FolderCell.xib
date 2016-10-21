@@ -33,7 +33,7 @@
                             <constraint firstAttribute="height" constant="22.5" id="wmW-H8-vWD"/>
                         </constraints>
                     </imageView>
-                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kwd-Z5-e1f">
+                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kwd-Z5-e1f" customClass="IndexedTableView" customModule="DragNDrop" customModuleProvider="target">
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="250" constant="122" id="hua-NY-rcU"/>
@@ -56,8 +56,9 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="collectionViewHeight" destination="hua-NY-rcU" id="Uu5-Tf-WZt"/>
                 <outlet property="folderName" destination="F47-RB-Du1" id="ZMM-Ec-FKI"/>
+                <outlet property="tableView" destination="Kwd-Z5-e1f" id="Twt-jP-woU"/>
+                <outlet property="tableViewHeight" destination="hua-NY-rcU" id="w0s-QP-GGF"/>
             </connections>
             <point key="canvasLocation" x="-244.5" y="21"/>
         </tableViewCell>

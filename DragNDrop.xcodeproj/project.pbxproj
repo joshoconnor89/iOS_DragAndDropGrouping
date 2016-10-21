@@ -18,6 +18,7 @@
 		C61BA4E71DB94A4900AB86D1 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61BA4E51DB94A4900AB86D1 /* FolderCell.xib */; };
 		C61BA4E91DB9A92600AB86D1 /* FolderDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = C61BA4E81DB9A92600AB86D1 /* FolderDialog.xib */; };
 		C61BA4EB1DB9A92F00AB86D1 /* FolderDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61BA4EA1DB9A92F00AB86D1 /* FolderDialog.swift */; };
+		C6B490C21DBAC699003B75CF /* IndexedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B490C11DBAC699003B75CF /* IndexedTableView.swift */; };
 		E26E7E951C74A5DD00911C22 /* GroupingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26E7E941C74A5DD00911C22 /* GroupingTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		C61BA4E51DB94A4900AB86D1 /* FolderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FolderCell.xib; sourceTree = "<group>"; };
 		C61BA4E81DB9A92600AB86D1 /* FolderDialog.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FolderDialog.xib; sourceTree = "<group>"; };
 		C61BA4EA1DB9A92F00AB86D1 /* FolderDialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderDialog.swift; sourceTree = "<group>"; };
+		C6B490C11DBAC699003B75CF /* IndexedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedTableView.swift; sourceTree = "<group>"; };
 		E26E7E941C74A5DD00911C22 /* GroupingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupingTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 			children = (
 				690D5B241A58B5F800654BFB /* Main.storyboard */,
 				E26E7E941C74A5DD00911C22 /* GroupingTableViewController.swift */,
+				C6B490C11DBAC699003B75CF /* IndexedTableView.swift */,
 				C61BA4E81DB9A92600AB86D1 /* FolderDialog.xib */,
 				C61BA4EA1DB9A92F00AB86D1 /* FolderDialog.swift */,
 				C61BA4E01DB9426200AB86D1 /* Cell.swift */,
@@ -242,6 +245,7 @@
 				C61BA4E11DB9426200AB86D1 /* Cell.swift in Sources */,
 				C61BA4EB1DB9A92F00AB86D1 /* FolderDialog.swift in Sources */,
 				C61BA4E61DB94A4900AB86D1 /* FolderCell.swift in Sources */,
+				C6B490C21DBAC699003B75CF /* IndexedTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

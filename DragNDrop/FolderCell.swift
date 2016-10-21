@@ -10,15 +10,21 @@ import UIKit
 
 class FolderCell: UITableViewCell {
     
-    var contents: String?
+    var contents: [String]?
+    var teams: NSMutableArray = NSMutableArray()
     
-    @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
+
+    @IBOutlet weak var tableView: IndexedTableView!
+    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var folderName: UILabel!
+
+
+
 
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        print(contents)
+
        
     }
     
@@ -32,6 +38,12 @@ class FolderCell: UITableViewCell {
         super.prepareForReuse()
         
 
+    }
+    
+    func populateTableView() {
+        print(contents)
+        
+        
     }
     
 }
