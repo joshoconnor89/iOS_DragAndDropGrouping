@@ -11,6 +11,7 @@ import UIKit
 class FolderCell: UITableViewCell {
     
     var contents: [String]?
+    var foldersName: String?
     var teams: NSMutableArray = NSMutableArray()
     
 

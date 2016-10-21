@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11521.1" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="6LF-u0-T5v">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11521.1" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="eFC-Wx-KQP">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11517.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Grouping Table View Controller-->
-        <scene sceneID="h9y-kV-6G7">
+        <scene sceneID="cHw-TW-64b">
             <objects>
-                <tableViewController storyboardIdentifier="GroupingTableViewController" id="6LF-u0-T5v" customClass="GroupingTableViewController" customModule="DragNDrop" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="b9k-bb-yUh">
+                <viewController storyboardIdentifier="GroupingTableViewController" id="eFC-Wx-KQP" customClass="GroupingTableViewController" customModule="DragNDrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nS9-34-Ta9"/>
+                        <viewControllerLayoutGuide type="bottom" id="uk6-gn-wbv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WqY-I5-9PE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="6LF-u0-T5v" id="p6b-lA-wDn"/>
-                            <outlet property="delegate" destination="6LF-u0-T5v" id="79a-RJ-jgc"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8eW-8w-OwB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="imN-jg-YoB">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uk6-gn-wbv" firstAttribute="top" secondItem="imN-jg-YoB" secondAttribute="bottom" id="K2f-pR-aSP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="imN-jg-YoB" secondAttribute="trailing" constant="-16" id="MuU-lV-kbp"/>
+                            <constraint firstItem="imN-jg-YoB" firstAttribute="top" secondItem="nS9-34-Ta9" secondAttribute="bottom" constant="19" id="XqV-OW-aKo"/>
+                            <constraint firstItem="imN-jg-YoB" firstAttribute="leading" secondItem="WqY-I5-9PE" secondAttribute="leadingMargin" constant="-16" id="kaO-Ju-Ee5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mainTableView" destination="imN-jg-YoB" id="OIm-yO-piI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UCx-Ev-ZaC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="404" y="421"/>
+            <point key="canvasLocation" x="500" y="423"/>
         </scene>
     </scenes>
 </document>

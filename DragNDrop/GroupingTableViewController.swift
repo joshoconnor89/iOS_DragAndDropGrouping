@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupingTableViewController: UITableViewController {
+class GroupingTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var teamDictionary: [Int : String] = [:]
     var foldersList: [String : [String]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
@@ -16,7 +16,9 @@ class GroupingTableViewController: UITableViewController {
     var finishedMovingItem: Bool = true
     var cellBeingMoved: Cell?
     var previousHighlightedCell: Cell?
+    var expandedIndexPath: Int?
     fileprivate var lastInitialIndexPath : IndexPath? = nil
+    @IBOutlet weak var mainTableView: UITableView!
     
     required init(coder aDecoder: NSCoder) {
         itemsArray = NSMutableArray()
@@ -55,15 +57,16 @@ class GroupingTableViewController: UITableViewController {
             }
         }
         print(teamDictionary)
+        mainTableView.delegate = self
+        mainTableView.dataSource = self
         
+        self.mainTableView.register(UINib(nibName: "FolderCell", bundle: nil), forCellReuseIdentifier: "FolderCell")// CustomTableViewCell.self, forCellReuseIdentifier: "customCell")
+        self.mainTableView.register(UINib(nibName: "Cell", bundle: nil), forCellReuseIdentifier: "ReuseableCell")// CustomTableViewCell.self, forCellReuseIdentifier: "customCell")
         
-        self.tableView.register(UINib(nibName: "FolderCell", bundle: nil), forCellReuseIdentifier: "FolderCell")// CustomTableViewCell.self, forCellReuseIdentifier: "customCell")
-        self.tableView.register(UINib(nibName: "Cell", bundle: nil), forCellReuseIdentifier: "ReuseableCell")// CustomTableViewCell.self, forCellReuseIdentifier: "customCell")
-        
-        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        mainTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         let longpress = UILongPressGestureRecognizer(target: self, action: #selector(GroupingTableViewController.longPressGestureRecognized(_:)))
-        tableView.addGestureRecognizer(longpress)
+        mainTableView.addGestureRecognizer(longpress)
     }
     
     override func didReceiveMemoryWarning() {
@@ -74,8 +77,8 @@ class GroupingTableViewController: UITableViewController {
     func longPressGestureRecognized(_ gestureRecognizer: UIGestureRecognizer) {
         let longPress = gestureRecognizer as! UILongPressGestureRecognizer
         let state = longPress.state
-        let locationInView = longPress.location(in: tableView)
-        let indexPath = tableView.indexPathForRow(at: locationInView)
+        let locationInView = longPress.location(in: mainTableView)
+        let indexPath = mainTableView.indexPathForRow(at: locationInView)
         
         struct CellBeingMoved {
             static var cellSnapshot : UIView? = nil
@@ -92,13 +95,13 @@ class GroupingTableViewController: UITableViewController {
             if indexPath != nil {
                 previousHighlightedCell = nil
                 Path.initialIndexPath = indexPath
-                let cell = tableView.cellForRow(at: indexPath!) as? Cell
+                let cell = mainTableView.cellForRow(at: indexPath!) as? Cell
                 
                 CellBeingMoved.cellSnapshot = snapshotOfCell(cell!)
                 var center = cell?.center
                 CellBeingMoved.cellSnapshot!.center = center!
                 CellBeingMoved.cellSnapshot!.alpha = 0.0
-                tableView.addSubview(CellBeingMoved.cellSnapshot!)
+                mainTableView.addSubview(CellBeingMoved.cellSnapshot!)
                 
                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     print("BEGIN DRAG AND DROP")
@@ -125,10 +128,10 @@ class GroupingTableViewController: UITableViewController {
                 if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
                     previousHighlightedCell?.backgroundColor = UIColor.clear
                     lastInitialIndexPath = Path.initialIndexPath
-                    let cell = tableView.cellForRow(at: indexPath!) as? Cell
+                    let cell = mainTableView.cellForRow(at: indexPath!) as? Cell
                     cell?.backgroundColor = UIColor.lightGray
                     previousHighlightedCell = cell
-                    self.tableView.reloadRows(at: [Path.initialIndexPath!], with: .automatic)
+                    self.mainTableView.reloadRows(at: [Path.initialIndexPath!], with: .automatic)
                 }else if (indexPath == nil){
                     previousHighlightedCell?.backgroundColor = UIColor.clear
                 }
@@ -147,8 +150,8 @@ class GroupingTableViewController: UITableViewController {
                     )
                     confirmFollowingAlertView.layer.cornerRadius = 5.0
                     self.view.addSubview(confirmFollowingAlertView)
-                    confirmFollowingAlertView.center.x = self.tableView.center.x
-                    confirmFollowingAlertView.center.y = self.tableView.center.y - 45
+                    confirmFollowingAlertView.center.x = self.mainTableView.center.x
+                    confirmFollowingAlertView.center.y = self.mainTableView.center.y - 45
                     confirmFollowingAlertView.confirmBlock = { confirmed, folderName in
 
                         
@@ -166,17 +169,17 @@ class GroupingTableViewController: UITableViewController {
                                     
                                     if let teamBeingMoved = self.cellBeingMoved?.teamLabel.text, let teamSelected = self.previousHighlightedCell?.teamLabel.text {
                                         
-                                        self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: self.tableView.indexPath(for: self.previousHighlightedCell!)!.row)
+                                        self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: self.mainTableView.indexPath(for: self.previousHighlightedCell!)!.row)
                                         self.itemsArray.remove(teamBeingMoved)
                                         self.itemsArray.remove(teamSelected)
 
                                         
                                         
                                     }
-                                    self.tableView.reloadData()
+                                    self.mainTableView.reloadData()
                                     Path.initialIndexPath = indexPath
                                     
-                                    let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
+                                    let cell = self.mainTableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
                                     
                                     
                                     UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -212,7 +215,7 @@ class GroupingTableViewController: UITableViewController {
                             Path.initialIndexPath = nil
                             CellBeingMoved.cellSnapshot!.removeFromSuperview()
                             CellBeingMoved.cellSnapshot = nil
-                            self.tableView.reloadData()
+                            self.mainTableView.reloadData()
                         }
                         
                     }
@@ -235,7 +238,7 @@ class GroupingTableViewController: UITableViewController {
                     Path.initialIndexPath = nil
                     CellBeingMoved.cellSnapshot!.removeFromSuperview()
                     CellBeingMoved.cellSnapshot = nil
-                    tableView.reloadData()
+                    mainTableView.reloadData()
                 }
                 
                 
@@ -260,7 +263,7 @@ class GroupingTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let cv = tableView as? IndexedTableView {
             return 2
         }else{
@@ -269,9 +272,13 @@ class GroupingTableViewController: UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("Cell for row called")
+        
         if let cv = tableView as? IndexedTableView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
+            print("INDEXED FOLDER NAME SUCCSS \(cv.indexedFolderName)")
+            let cell = UITableViewCell()
+            cell.textLabel?.text = "DROPDOWN ITEM"
             return cell
 
         }else{
@@ -284,6 +291,7 @@ class GroupingTableViewController: UITableViewController {
                     for team in teams {
                         if ((itemsArray[(indexPath as NSIndexPath).row] as? String)?.contains(team))! {
                             cell.folderName.text = item.0
+                            cell.foldersName = item.0
                             cell.contents = item.1
                         }
                     }
@@ -301,42 +309,58 @@ class GroupingTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         let selectedCell = tableView.cellForRow(at: indexPath)
         
         switch selectedCell {
             case let teamCell as Cell:
                 print("do nothing!")
+                expandedIndexPath = nil
+                mainTableView.reloadData()
             case let folderCell as FolderCell:
                 print("Expand cell!")
+                expandedIndexPath = indexPath.row
+                folderCell.tableView.frame = CGRect(x: 0, y: 45, width: 406, height: 100)
                 folderCell.tableView.dataSource = self
                 folderCell.tableView.delegate = self
-                populateTableView(folderCell)
+                folderCell.tableView.indexedFolderName = folderCell.foldersName
+                folderCell.tableView.reloadData()
+                
+                mainTableView.beginUpdates()
+                mainTableView.endUpdates()
+            
             default:
                 break
             
         }
     }
     
+
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (finishedMovingItem) {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let cv = tableView as? IndexedTableView {
             return 44
         }else{
-            if indexPath == lastInitialIndexPath {
-                return 0
-            }else{
+            if let expandedIndexPath = expandedIndexPath {
+                if expandedIndexPath == indexPath.row {
+                    return 200
+                }
+            }
+            if (finishedMovingItem) {
                 return 44
+            }else{
+                if indexPath == lastInitialIndexPath {
+                    return 0
+                }else{
+                    return 44
+                }
             }
         }
 
+        
+
     }
     
-    func populateTableView(_ cell: AnyObject) {
-        if cell is FolderCell {
-            
-        }
-    }
 }
 

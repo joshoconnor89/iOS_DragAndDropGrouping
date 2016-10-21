@@ -9,5 +9,5 @@
 import UIKit
 
 class IndexedTableView: UITableView {
-    var indexPath: IndexPath?
+    var indexedFolderName: String?
 }
