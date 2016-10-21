@@ -77,7 +77,7 @@ class GroupingTableViewController: UITableViewController {
         let locationInView = longPress.location(in: tableView)
         let indexPath = tableView.indexPathForRow(at: locationInView)
         
-        struct My {
+        struct CellBeingMoved {
             static var cellSnapshot : UIView? = nil
             static var cellIsAnimating : Bool = false
             static var cellNeedToShow : Bool = false
@@ -94,33 +94,33 @@ class GroupingTableViewController: UITableViewController {
                 Path.initialIndexPath = indexPath
                 let cell = tableView.cellForRow(at: indexPath!) as? Cell
                 
-                My.cellSnapshot = snapshotOfCell(cell!)
+                CellBeingMoved.cellSnapshot = snapshotOfCell(cell!)
                 var center = cell?.center
-                My.cellSnapshot!.center = center!
-                My.cellSnapshot!.alpha = 0.0
-                tableView.addSubview(My.cellSnapshot!)
+                CellBeingMoved.cellSnapshot!.center = center!
+                CellBeingMoved.cellSnapshot!.alpha = 0.0
+                tableView.addSubview(CellBeingMoved.cellSnapshot!)
                 
                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
                     print("BEGIN DRAG AND DROP")
                     self.cellBeingMoved = cell
                     center?.y = locationInView.y
-                    My.cellIsAnimating = true
-                    My.cellSnapshot!.center = center!
-                    My.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                    My.cellSnapshot!.alpha = 0.98
+                    CellBeingMoved.cellIsAnimating = true
+                    CellBeingMoved.cellSnapshot!.center = center!
+                    CellBeingMoved.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                    CellBeingMoved.cellSnapshot!.alpha = 0.98
                     cell?.alpha = 0.0
                     }, completion: { (finished) -> Void in
                         if finished {
-                            My.cellIsAnimating = false
+                            CellBeingMoved.cellIsAnimating = false
                         }
                 })
             }
             
         case UIGestureRecognizerState.changed:
-            if My.cellSnapshot != nil {
-                var center = My.cellSnapshot!.center
+            if CellBeingMoved.cellSnapshot != nil {
+                var center = CellBeingMoved.cellSnapshot!.center
                 center.y = locationInView.y
-                My.cellSnapshot!.center = center
+                CellBeingMoved.cellSnapshot!.center = center
                 
                 if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
                     previousHighlightedCell?.backgroundColor = UIColor.clear
@@ -165,16 +165,16 @@ class GroupingTableViewController: UITableViewController {
                                 let cell = self.tableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
                                 
                                 UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                                    My.cellSnapshot!.center = (cell?.center)!
-                                    My.cellSnapshot!.transform = CGAffineTransform.identity
-                                    My.cellSnapshot!.alpha = 0.0
+                                    CellBeingMoved.cellSnapshot!.center = (cell?.center)!
+                                    CellBeingMoved.cellSnapshot!.transform = CGAffineTransform.identity
+                                    CellBeingMoved.cellSnapshot!.alpha = 0.0
                                     cell?.alpha = 1.0
                                     
                                     }, completion: { (finished) -> Void in
                                         if finished {
                                             Path.initialIndexPath = nil
-                                            My.cellSnapshot!.removeFromSuperview()
-                                            My.cellSnapshot = nil
+                                            CellBeingMoved.cellSnapshot!.removeFromSuperview()
+                                            CellBeingMoved.cellSnapshot = nil
                                         }
                                 })
                             }
@@ -189,8 +189,8 @@ class GroupingTableViewController: UITableViewController {
                         else{
                             confirmFollowingAlertView.removeFromSuperview()
                             Path.initialIndexPath = nil
-                            My.cellSnapshot!.removeFromSuperview()
-                            My.cellSnapshot = nil
+                            CellBeingMoved.cellSnapshot!.removeFromSuperview()
+                            CellBeingMoved.cellSnapshot = nil
                             self.tableView.reloadData()
                         }
                         
@@ -212,8 +212,8 @@ class GroupingTableViewController: UITableViewController {
 
                 }else{
                     Path.initialIndexPath = nil
-                    My.cellSnapshot!.removeFromSuperview()
-                    My.cellSnapshot = nil
+                    CellBeingMoved.cellSnapshot!.removeFromSuperview()
+                    CellBeingMoved.cellSnapshot = nil
                     tableView.reloadData()
                 }
                 
