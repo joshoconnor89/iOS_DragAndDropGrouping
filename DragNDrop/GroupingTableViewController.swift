@@ -314,6 +314,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         let selectedCell = tableView.cellForRow(at: indexPath)
+        selectedCell?.selectionStyle = .none
         tappedIndex = indexPath.row
         switch selectedCell {
             case let teamCell as Cell:
