@@ -163,13 +163,24 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 
                 if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
                     previousHighlightedCell?.backgroundColor = UIColor.clear
+                    previousHighlightedFolderCell?.backgroundColor = UIColor.clear
+                    
                     lastInitialIndexPath = Path.initialIndexPath
-                    let cell = mainTableView.cellForRow(at: indexPath!) as? Cell
-                    cell?.backgroundColor = UIColor.lightGray
-                    previousHighlightedCell = cell
+                    
+                    if let cell = mainTableView.cellForRow(at: indexPath!) as? Cell {
+                        cell.backgroundColor = UIColor.lightGray
+                        previousHighlightedCell = cell
+                        previousHighlightedFolderCell = nil
+                    }else if let folderCell = mainTableView.cellForRow(at: indexPath!) as? FolderCell {
+                        folderCell.backgroundColor = UIColor.lightGray
+                        previousHighlightedFolderCell = folderCell
+                        previousHighlightedCell = nil
+                    }
+                    
                     self.mainTableView.reloadRows(at: [Path.initialIndexPath!], with: .automatic)
                 }else if (indexPath == nil){
                     previousHighlightedCell?.backgroundColor = UIColor.clear
+                    previousHighlightedFolderCell?.backgroundColor = UIColor.clear
                 }
             }
         default:
