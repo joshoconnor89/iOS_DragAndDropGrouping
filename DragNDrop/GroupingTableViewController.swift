@@ -324,7 +324,12 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 if (expandedIndexPath == nil){
                     expandedIndexPath = indexPath.row
                 }else{
-                    expandedIndexPath = nil
+                    if expandedIndexPath == tappedIndex {
+                        expandedIndexPath = nil
+                    }else{
+                        expandedIndexPath = tappedIndex
+                    }
+                    
                 }
                 
                 folderCell.tableView.frame = CGRect(x: 0, y: 45, width: 406, height: 100)
@@ -346,6 +351,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let cv = tableView as? IndexedTableView {
+            print("a")
             return 44
         }else{
             
@@ -354,17 +360,22 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
             if let expandedIndexPath = expandedIndexPath {
                 if expandedIndexPath == indexPath.row {
                     aCellIsExpanded = true
+                    print("b")
                     return 200
                 }else{
+                    print("c")
                     return 44
                 }
             }
             if (finishedMovingItem) {
+                print("d")
                 return 44
             }else{
                 if indexPath == lastInitialIndexPath {
+                    print("e")
                     return 0
                 }else{
+                    print("f")
                     return 44
                 }
             }
