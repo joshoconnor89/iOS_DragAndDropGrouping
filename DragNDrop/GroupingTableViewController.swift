@@ -17,6 +17,8 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     var cellBeingMoved: Cell?
     var previousHighlightedCell: Cell?
     var expandedIndexPath: Int?
+    var aCellIsExpanded: Bool = false
+    var tappedIndex: Int?
     fileprivate var lastInitialIndexPath : IndexPath? = nil
     @IBOutlet weak var mainTableView: UITableView!
     
@@ -312,15 +314,19 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         let selectedCell = tableView.cellForRow(at: indexPath)
-        
+        tappedIndex = indexPath.row
         switch selectedCell {
             case let teamCell as Cell:
                 print("do nothing!")
-                expandedIndexPath = nil
                 mainTableView.reloadData()
             case let folderCell as FolderCell:
                 print("Expand cell!")
-                expandedIndexPath = indexPath.row
+                if (expandedIndexPath == nil){
+                    expandedIndexPath = indexPath.row
+                }else{
+                    expandedIndexPath = nil
+                }
+                
                 folderCell.tableView.frame = CGRect(x: 0, y: 45, width: 406, height: 100)
                 folderCell.tableView.dataSource = self
                 folderCell.tableView.delegate = self
@@ -342,9 +348,15 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
         if let cv = tableView as? IndexedTableView {
             return 44
         }else{
+            
+            
+            
             if let expandedIndexPath = expandedIndexPath {
                 if expandedIndexPath == indexPath.row {
+                    aCellIsExpanded = true
                     return 200
+                }else{
+                    return 44
                 }
             }
             if (finishedMovingItem) {
