@@ -200,7 +200,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 //Create a folder by combining two cells
                     if (cellBeingMoved != nil && previousHighlightedCell != nil) {
                         print("combining two cells into a folder!")
-                        let confirmFollowingAlertView = FolderDialog(
+                        let confirmFollowingAlertView = FolderDialog(createFolderMode: true,
                             frame: CGRect(x: 0, y: 0, width: 290, height: 180)
                         )
                         confirmFollowingAlertView.layer.cornerRadius = 5.0
@@ -264,6 +264,55 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                     else if (cellBeingMoved != nil && previousHighlightedFolderCell != nil) {
                         print("adding cell to folder!")
                         //DO YOU WANT TO ADD THIS TEAM TO THE FOLDER ALERT?
+                        let confirmFollowingAlertView = FolderDialog(createFolderMode: false,
+                            frame: CGRect(x: 0, y: 0, width: 290, height: 180)
+                        )
+                        confirmFollowingAlertView.layer.cornerRadius = 5.0
+                        self.view.addSubview(confirmFollowingAlertView)
+                        confirmFollowingAlertView.center.x = self.mainTableView.center.x
+                        confirmFollowingAlertView.center.y = self.mainTableView.center.y - 45
+                        confirmFollowingAlertView.confirmBlock = { confirmed, folderName in
+                            if confirmed == true {
+                                print("confirm add cell to folder")
+                                confirmFollowingAlertView.removeFromSuperview()
+                                print(self.previousHighlightedFolderCell?.contents)
+                                
+                                let folderName = self.previousHighlightedFolderCell?.foldersName
+                                if let folder = self.foldersList[folderName!] {
+                                    let mutableTeamArray: NSMutableArray = NSMutableArray()
+                                    for team in folder {
+                                        mutableTeamArray.add(team)
+                                    }
+                                    if let teamBeingRemoved = self.cellBeingMoved?.teamName {
+                                        mutableTeamArray.add(teamBeingRemoved)
+                                        
+                                        var stringArray = [String]()
+                                        for item in mutableTeamArray {
+                                            stringArray.append(item as! String)
+                                        }
+                                        self.foldersList[folderName!] = stringArray
+                                        self.itemsArray.remove(teamBeingRemoved)
+                                        Path.initialIndexPath = nil
+                                        CellBeingMoved.cellSnapshot!.removeFromSuperview()
+                                        CellBeingMoved.cellSnapshot = nil
+                                        self.mainTableView.reloadData()
+                                        self.previousHighlightedFolderCell?.tableView.reloadData()
+                                    }
+                                    
+                                }
+                                
+                            }else if confirmed == false{
+                                print("decline add cell to folder")
+                                confirmFollowingAlertView.removeFromSuperview()
+                                
+                                
+                            }
+                            
+                            
+                            
+                        }
+
+
                     }
                     
                     //Reordering a folder
@@ -303,7 +352,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let cv = tableView as? IndexedTableView {
-            return 2
+            return cv.currentCount!
         }else{
             return itemsArray.count
         }
@@ -348,6 +397,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ReuseableCell", for: indexPath) as! Cell
                 cell.teamLabel.text = String(describing: itemsArray[(indexPath as NSIndexPath).row])
+                cell.teamName = String(describing: itemsArray[(indexPath as NSIndexPath).row])
                 return cell
                 
             }
@@ -383,6 +433,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 folderCell.tableView.dataSource = self
                 folderCell.tableView.delegate = self
                 folderCell.tableView.indexedFolderName = folderCell.foldersName
+                folderCell.tableView.currentCount = folderCell.contents?.count
                 folderCell.tableView.reloadData()
                 
                 mainTableView.beginUpdates()
@@ -404,8 +455,14 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 if expandedIndexPath == indexPath.row {
                     aCellIsExpanded = true
                     return 132
-                }else{
+                }else if (finishedMovingItem){
                     return 44
+                }else{
+                    if indexPath == lastInitialIndexPath {
+                        return 0
+                    }else{
+                        return 44
+                    }
                 }
             }
             if (finishedMovingItem) {

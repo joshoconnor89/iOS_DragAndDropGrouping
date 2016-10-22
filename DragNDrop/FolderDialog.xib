@@ -13,9 +13,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FolderDialog" customModule="DragNDrop" customModuleProvider="target">
             <connections>
+                <outlet property="addCellToFolderLabel" destination="Zx8-20-aGx" id="ffi-mc-TkP"/>
                 <outlet property="cancelButton" destination="Ylw-hC-lya" id="KpG-Ew-afA"/>
+                <outlet property="folderNameLabel" destination="grZ-5B-hw8" id="EJD-99-O0T"/>
                 <outlet property="folderNameTextfield" destination="dYk-3M-fiO" id="rmc-27-SAG"/>
                 <outlet property="saveButton" destination="BKA-Yc-uHJ" id="PAw-GZ-hHG"/>
+                <outlet property="titleLabel" destination="GPn-mW-QEB" id="3SU-oU-dgr"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -47,7 +50,7 @@
                         <action selector="cancelButtonPressed:" destination="-1" eventType="touchUpInside" id="pPV-by-O7J"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create folder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPn-mW-QEB">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create folder?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPn-mW-QEB">
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                     <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -64,9 +67,18 @@
                         <action selector="saveButtonPressed:" destination="-1" eventType="touchUpInside" id="XYz-us-Qpy"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you want to add this cell to this folder?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zx8-20-aGx">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="icw-VH-098"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.58431372550000005" green="0.3921568627" blue="0.63921568630000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="Zx8-20-aGx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="0YD-iW-CfD"/>
                 <constraint firstAttribute="trailing" secondItem="BKA-Yc-uHJ" secondAttribute="trailing" constant="5" id="9Ad-7a-hzS"/>
                 <constraint firstItem="GPn-mW-QEB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="A9w-og-Xhi"/>
                 <constraint firstItem="dYk-3M-fiO" firstAttribute="centerY" secondItem="grZ-5B-hw8" secondAttribute="centerY" id="CfI-uu-H20"/>
@@ -79,7 +91,9 @@
                 <constraint firstAttribute="trailing" secondItem="GPn-mW-QEB" secondAttribute="trailing" constant="15" id="Z1s-SG-8my"/>
                 <constraint firstAttribute="bottom" secondItem="BKA-Yc-uHJ" secondAttribute="bottom" constant="5" id="a6s-68-fRp"/>
                 <constraint firstItem="Ylw-hC-lya" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="mtV-1t-A2E"/>
+                <constraint firstItem="Zx8-20-aGx" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="sHe-so-NSo"/>
                 <constraint firstItem="Ylw-hC-lya" firstAttribute="width" secondItem="BKA-Yc-uHJ" secondAttribute="width" id="xSb-No-fr7"/>
+                <constraint firstAttribute="trailing" secondItem="Zx8-20-aGx" secondAttribute="trailing" constant="30" id="zkM-9K-feP"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-482" y="-70"/>

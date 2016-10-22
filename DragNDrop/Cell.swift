@@ -10,7 +10,7 @@ import UIKit
 
 class Cell: UITableViewCell {
     
-
+    var teamName: String?
 
     @IBOutlet weak var teamLabel: UILabel!
     

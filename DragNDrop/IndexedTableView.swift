@@ -10,4 +10,5 @@ import UIKit
 
 class IndexedTableView: UITableView {
     var indexedFolderName: String?
+    var currentCount: Int?
 }

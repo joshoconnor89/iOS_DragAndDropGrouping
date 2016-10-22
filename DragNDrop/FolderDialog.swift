@@ -10,15 +10,22 @@ import UIKit
 
 class FolderDialog: UIView {
     
+    var isCreateFolderMode: Bool?
     var confirmBlock: ((_ confirmed: Bool, _ folderName: String?) -> ())?
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var folderNameTextfield: UITextField!
+    @IBOutlet weak var folderNameLabel: UILabel!
+    @IBOutlet weak var addCellToFolderLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
 
-    override init(frame: CGRect) {
+    init(createFolderMode: Bool, frame: CGRect) {
         super.init(frame: frame)
-
+        isCreateFolderMode = createFolderMode
+        
         connectNibUI()
+        
+        setUpUI()
         
         cancelButton.layer.borderWidth = 1.5
         cancelButton.layer.borderColor = UIColor.white.cgColor
@@ -27,6 +34,7 @@ class FolderDialog: UIView {
         saveButton.layer.borderWidth = 1.5
         saveButton.layer.borderColor = UIColor.white.cgColor
         saveButton.layer.cornerRadius = 3.0
+        
         
     }
     
@@ -40,6 +48,17 @@ class FolderDialog: UIView {
         //nibView.translatesAutoresizingMaskIntoConstraints = false
         
         self.addSubview(nibView)
+    }
+    
+    func setUpUI() {
+        if isCreateFolderMode == true {
+            addCellToFolderLabel.isHidden = true
+        }else{
+            folderNameLabel.isHidden = true
+            folderNameTextfield.isHidden = true
+            saveButton.setTitle("Yes", for: .normal)
+            titleLabel.text = "Add to folder?"
+        }
     }
     
     @IBAction func saveButtonPressed(_ sender: AnyObject) {
