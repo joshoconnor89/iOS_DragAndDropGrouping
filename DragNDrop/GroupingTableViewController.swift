@@ -14,8 +14,15 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     var foldersList: [String : [String]] = [:]  //this will be [folderId: [teams]].  In our project it will be [folderID: [Media]]
     var itemsArray : NSMutableArray
     var finishedMovingItem: Bool = true
+    
+    //Regular cells
     var cellBeingMoved: Cell?
     var previousHighlightedCell: Cell?
+    
+    //Folder cells
+    var folderCellBeingMoved: FolderCell?
+    var previousHighlightedFolderCell: FolderCell?
+    
     var expandedIndexPath: Int?
     var aCellIsExpanded: Bool = false
     var tappedIndex: Int?
@@ -97,29 +104,56 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
             if indexPath != nil {
                 previousHighlightedCell = nil
                 Path.initialIndexPath = indexPath
-                let cell = mainTableView.cellForRow(at: indexPath!) as? Cell
                 
-                CellBeingMoved.cellSnapshot = snapshotOfCell(cell!)
-                var center = cell?.center
-                CellBeingMoved.cellSnapshot!.center = center!
-                CellBeingMoved.cellSnapshot!.alpha = 0.0
-                mainTableView.addSubview(CellBeingMoved.cellSnapshot!)
+                if let cell = mainTableView.cellForRow(at: indexPath!) as? Cell {
+                    CellBeingMoved.cellSnapshot = snapshotOfCell(cell)
+                    var center = cell.center
+                    CellBeingMoved.cellSnapshot!.center = center
+                    CellBeingMoved.cellSnapshot!.alpha = 0.0
+                    mainTableView.addSubview(CellBeingMoved.cellSnapshot!)
+                    
+                    UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                        print("BEGIN DRAG AND DROP OF REGULAR CELL")
+                        self.cellBeingMoved = cell
+                        self.folderCellBeingMoved = nil
+                        center.y = locationInView.y
+                        CellBeingMoved.cellIsAnimating = true
+                        CellBeingMoved.cellSnapshot!.center = center
+                        CellBeingMoved.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                        CellBeingMoved.cellSnapshot!.alpha = 0.98
+                        cell.alpha = 0.0
+                        }, completion: { (finished) -> Void in
+                            if finished {
+                                CellBeingMoved.cellIsAnimating = false
+                            }
+                    })
+
+                }else if let folderCell = mainTableView.cellForRow(at: indexPath!) as? FolderCell {
+                    CellBeingMoved.cellSnapshot = snapshotOfCell(folderCell)
+                    var center = folderCell.center
+                    CellBeingMoved.cellSnapshot!.center = center
+                    CellBeingMoved.cellSnapshot!.alpha = 0.0
+                    mainTableView.addSubview(CellBeingMoved.cellSnapshot!)
+                    
+                    UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                        print("BEGIN DRAG AND DROP OF FOLDER.  ONLY REORDERING, NOT COMBINING")
+                        self.cellBeingMoved = nil
+                        self.folderCellBeingMoved = folderCell
+                        center.y = locationInView.y
+                        CellBeingMoved.cellIsAnimating = true
+                        CellBeingMoved.cellSnapshot!.center = center
+                        CellBeingMoved.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                        CellBeingMoved.cellSnapshot!.alpha = 0.98
+                        folderCell.alpha = 0.0
+                        }, completion: { (finished) -> Void in
+                            if finished {
+                                CellBeingMoved.cellIsAnimating = false
+                            }
+                    })
+
+                }
                 
-                UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                    print("BEGIN DRAG AND DROP")
-                    self.cellBeingMoved = cell
-                    center?.y = locationInView.y
-                    CellBeingMoved.cellIsAnimating = true
-                    CellBeingMoved.cellSnapshot!.center = center!
-                    CellBeingMoved.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                    CellBeingMoved.cellSnapshot!.alpha = 0.98
-                    cell?.alpha = 0.0
-                    }, completion: { (finished) -> Void in
-                        if finished {
-                            CellBeingMoved.cellIsAnimating = false
-                        }
-                })
-            }
+        }
             
         case UIGestureRecognizerState.changed:
             if CellBeingMoved.cellSnapshot != nil {
