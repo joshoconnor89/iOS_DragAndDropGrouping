@@ -25,7 +25,10 @@ class FolderCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
+        tableView.register(UINib(nibName: "FolderCell", bundle: nil), forCellReuseIdentifier: "FolderCell")
+        
+        tableView.allowsSelection = false
+        
        
     }
     
