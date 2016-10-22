@@ -224,14 +224,12 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                     
 
                     //TO DO:  
-                        //1) COMBINE CELLS:
-                            //TO DO THIS, WE NEED TO ADD cellBeingMoved AND previousHighlightedCell INTO foldersList DICTIONARY.
-                            //REMOVE CELLS FROM TABLEVIEW (IN CELLFORROW, IF CELL == FOLDERSLISTCELL, DONT ADD IT)
-                            //CREATE FOLDERCELL, ADD CELLS REMOVED TO FOLDER CELL (NEED TO ADD VAR: dropDownCells IN FOLDERCELL WHICH CONTAINS CELLS CONTAINED INSIDE)
-                                //VERIFY THE DATA IN dropDownCells is the data of cells not visible
-                        //2) ADD DROPDOWN:
-                            //FOLDERCELL WILL CONTAIN A TABLEVIEW/COLLECTIONVIEW (INITIALLY 0PX TALL) WHICH WHEN THE DROPDOWN BUTTON IS PRESSED, WILL EXPAND
-                            //TO TABLES FULL CONTENT SIZE.  CALL self.beginUpdates/endUpdates ON USER PROFILE TABLEVIEW TO RESIZE IT.
+                        //1) ABILITY TO ADD TEAMS TO EXISTING FOLDERS  
+                            //DRAG AND HOLD TEAM CELLS, DROP INTO FOLDER, ALERT SHOWS UP
+                                //DO YOU WANT TO ADD THIS TEAM TO THE FOLDER?
+                        //2) ABILITY TO REMOVE TEAMS FROM FOLDERS
+                            //DRAG AND HOLD CELL IN FOLDER TO REMOVE THEM
+                        //3) ABILITY TO MOVE FOLDERS
                     
                     
                     
@@ -275,22 +273,20 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("Cell for row called")
-        
+
         if let cv = tableView as? IndexedTableView {
             let indexedFolderName = cv.indexedFolderName
             let cell = UITableViewCell()
+
             for item in foldersList {
                 let folderName = item.0
                 if folderName == indexedFolderName {
                     let teams = item.1
-                    cell.textLabel?.text = teams[indexPath.row]
+                    cell.textLabel?.text = "    " + teams[indexPath.row]
+                    cell.textLabel?.textColor = UIColor.blue
                 }
-                
-            
-            
             }
-            //cell.textLabel?.text = "DROPDOWN ITEM"
+
             return cell
 
         }else{
@@ -322,9 +318,9 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: false)
+        tableView.deselectRow(at: indexPath, animated: true)
         let selectedCell = tableView.cellForRow(at: indexPath)
-        selectedCell?.selectionStyle = .none
+
         tappedIndex = indexPath.row
         switch selectedCell {
             case let teamCell as Cell:
@@ -337,13 +333,15 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 }else{
                     if expandedIndexPath == tappedIndex {
                         expandedIndexPath = nil
+                        folderCell.tableView.frame = CGRect(x: 0, y: 45, width: 406, height: 0)
                     }else{
                         expandedIndexPath = tappedIndex
+                        folderCell.tableView.frame = CGRect(x: 0, y: 45, width: 406, height: 100)
                     }
                     
                 }
                 
-                folderCell.tableView.frame = CGRect(x: 0, y: 45, width: 406, height: 100)
+                
                 folderCell.tableView.dataSource = self
                 folderCell.tableView.delegate = self
                 folderCell.tableView.indexedFolderName = folderCell.foldersName
@@ -367,7 +365,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
             if let expandedIndexPath = expandedIndexPath {
                 if expandedIndexPath == indexPath.row {
                     aCellIsExpanded = true
-                    return 200
+                    return 132
                 }else{
                     return 44
                 }
