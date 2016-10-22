@@ -278,9 +278,19 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
         print("Cell for row called")
         
         if let cv = tableView as? IndexedTableView {
-            print("INDEXED FOLDER NAME SUCCSS \(cv.indexedFolderName)")
+            let indexedFolderName = cv.indexedFolderName
             let cell = UITableViewCell()
-            cell.textLabel?.text = "DROPDOWN ITEM"
+            for item in foldersList {
+                let folderName = item.0
+                if folderName == indexedFolderName {
+                    let teams = item.1
+                    cell.textLabel?.text = teams[indexPath.row]
+                }
+                
+            
+            
+            }
+            //cell.textLabel?.text = "DROPDOWN ITEM"
             return cell
 
         }else{
@@ -352,31 +362,22 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let cv = tableView as? IndexedTableView {
-            print("a")
             return 44
         }else{
-            
-            
-            
             if let expandedIndexPath = expandedIndexPath {
                 if expandedIndexPath == indexPath.row {
                     aCellIsExpanded = true
-                    print("b")
                     return 200
                 }else{
-                    print("c")
                     return 44
                 }
             }
             if (finishedMovingItem) {
-                print("d")
                 return 44
             }else{
                 if indexPath == lastInitialIndexPath {
-                    print("e")
                     return 0
                 }else{
-                    print("f")
                     return 44
                 }
             }
