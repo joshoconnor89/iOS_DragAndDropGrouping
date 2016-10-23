@@ -409,6 +409,10 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                             cell.folderName.text = item.0
                             cell.foldersName = item.0
                             cell.contents = item.1
+                            cell.tableView.delegate = self
+                            cell.tableView.dataSource = self
+                            cell.tableView.currentCount = item.1.count
+                            cell.tableView.indexedFolderName = item.0
                         }
                     }
                 }
