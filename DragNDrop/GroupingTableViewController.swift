@@ -220,6 +220,14 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                                         self.foldersList[folderName] = [self.cellBeingMoved!.teamLabel.text!, self.previousHighlightedCell!.teamLabel.text!]
                                         print("Folders list:\(self.foldersList)")
                                         
+                                        
+                                        let indexPathOfLastHighlightedCell = self.mainTableView.indexPath(for: self.previousHighlightedCell!)
+                                        if self.expandedIndexPath != nil {
+                                            if (((indexPathOfLastHighlightedCell?.row)! < self.expandedIndexPath!) && ((Path.initialIndexPath?.row)! < self.expandedIndexPath!)){
+                                                self.expandedIndexPath = self.expandedIndexPath! - 1
+                                            }
+                                        }
+    
                                         if let teamBeingMoved = self.cellBeingMoved?.teamLabel.text, let teamSelected = self.previousHighlightedCell?.teamLabel.text {
                                             self.itemsArray.insert("Folder: \(teamBeingMoved), \(teamSelected)", at: self.mainTableView.indexPath(for: self.previousHighlightedCell!)!.row)
                                             self.itemsArray.remove(teamBeingMoved)
@@ -227,6 +235,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                                         }
                                         self.mainTableView.reloadData()
                                         Path.initialIndexPath = indexPath
+                                        
                                         
                                         let cell = self.mainTableView.cellForRow(at: Path.initialIndexPath!) as UITableViewCell!
                                         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -310,6 +319,8 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                                         
                                         self.previousHighlightedFolderCell?.tableView.reloadData()
                                         self.previousHighlightedFolderCell?.backgroundColor = UIColor.clear
+                                        
+                                        
                                     }
                                     
                                 }
@@ -375,7 +386,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
         if let cv = tableView as? IndexedTableView {
             let indexedFolderName = cv.indexedFolderName
             let cell = UITableViewCell()
-
+            
             for item in foldersList {
                 let folderName = item.0
                 if folderName == indexedFolderName {
@@ -384,7 +395,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                     cell.textLabel?.textColor = UIColor.blue
                 }
             }
-
+            
             return cell
 
         }else{
