@@ -75,6 +75,8 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
         
         let longpress = UILongPressGestureRecognizer(target: self, action: #selector(GroupingTableViewController.longPressGestureRecognized(_:)))
         mainTableView.addGestureRecognizer(longpress)
+        
+        self.mainTableView.tableFooterView = UIView()
     }
     
     override func didReceiveMemoryWarning() {
