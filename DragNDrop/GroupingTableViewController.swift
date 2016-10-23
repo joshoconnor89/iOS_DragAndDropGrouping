@@ -392,7 +392,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 if folderName == indexedFolderName {
                     let teams = item.1
                     cell.textLabel?.text = "    " + teams[indexPath.row]
-                    cell.textLabel?.textColor = UIColor.blue
+                    cell.textLabel?.textColor = UIColor.black
                 }
             }
             
