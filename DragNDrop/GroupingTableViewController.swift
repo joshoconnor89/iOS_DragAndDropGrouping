@@ -24,7 +24,6 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
     var previousHighlightedFolderCell: FolderCell?
     
     var expandedIndexPath: Int?
-    var aCellIsExpanded: Bool = false
     var tappedIndex: Int?
     fileprivate var lastInitialIndexPath : IndexPath? = nil
     @IBOutlet weak var mainTableView: UITableView!
@@ -291,12 +290,19 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                                             stringArray.append(item as! String)
                                         }
                                         self.foldersList[folderName!] = stringArray
+                                        
+                                        let indexPathOfFolder = self.mainTableView.indexPath(for: self.previousHighlightedFolderCell!)!
+                                        let previousString: String = (self.itemsArray[indexPathOfFolder.row] as? String)!
+                                        let updatedString = previousString + "," + " " + teamBeingRemoved
+                                        self.itemsArray[indexPathOfFolder.row] = updatedString
+                                        
                                         self.itemsArray.remove(teamBeingRemoved)
                                         Path.initialIndexPath = nil
                                         CellBeingMoved.cellSnapshot!.removeFromSuperview()
                                         CellBeingMoved.cellSnapshot = nil
                                         self.mainTableView.reloadData()
                                         self.previousHighlightedFolderCell?.tableView.reloadData()
+                                        self.previousHighlightedFolderCell?.backgroundColor = UIColor.clear
                                     }
                                     
                                 }
@@ -327,8 +333,6 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                     CellBeingMoved.cellSnapshot = nil
                     mainTableView.reloadData()
                 }
-                
-                
             }
         }
     }
@@ -377,7 +381,6 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
             return cell
 
         }else{
-            
             if ((itemsArray[(indexPath as NSIndexPath).row] as AnyObject).hasPrefix("Folder:")){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCell", for: indexPath) as! FolderCell
                 
@@ -390,7 +393,6 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                             cell.contents = item.1
                         }
                     }
-                    
                 }
                 return cell
             }
@@ -401,7 +403,6 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                 return cell
                 
             }
-
         }
     }
     
@@ -428,8 +429,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                     }
                     
                 }
-                
-                
+
                 folderCell.tableView.dataSource = self
                 folderCell.tableView.delegate = self
                 folderCell.tableView.indexedFolderName = folderCell.foldersName
@@ -445,16 +445,17 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
         }
     }
     
-
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let cv = tableView as? IndexedTableView {
             return 44
         }else{
             if let expandedIndexPath = expandedIndexPath {
                 if expandedIndexPath == indexPath.row {
-                    aCellIsExpanded = true
-                    return 132
+                    let cellString: String = itemsArray[indexPath.row] as! String
+                    let numberOfOccurences = cellString.components(separatedBy: ",").count
+                    let fullCellSize = 44 * (numberOfOccurences + 1)
+
+                    return CGFloat(fullCellSize)
                 }else if (finishedMovingItem){
                     return 44
                 }else{
@@ -465,20 +466,20 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                     }
                 }
             }
-            if (finishedMovingItem) {
-                return 44
-            }else{
-                if indexPath == lastInitialIndexPath {
-                    return 0
-                }else{
+
+            else{
+                if (finishedMovingItem) {
                     return 44
+                }else{
+                    if indexPath == lastInitialIndexPath {
+                        return 0
+                    }else{
+                        return 44
+                    }
                 }
             }
+            
         }
-
-        
-
     }
-    
 }
 
