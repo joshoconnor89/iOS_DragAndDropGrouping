@@ -223,7 +223,7 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                                         
                                         let indexPathOfLastHighlightedCell = self.mainTableView.indexPath(for: self.previousHighlightedCell!)
                                         if self.expandedIndexPath != nil {
-                                            if (((indexPathOfLastHighlightedCell?.row)! < self.expandedIndexPath!) && ((Path.initialIndexPath?.row)! < self.expandedIndexPath!)){
+                                            if ((((indexPathOfLastHighlightedCell?.row)! < self.expandedIndexPath!) && ((Path.initialIndexPath?.row)! < self.expandedIndexPath!)) || (Path.initialIndexPath?.row)! < self.expandedIndexPath!){
                                                 self.expandedIndexPath = self.expandedIndexPath! - 1
                                             }
                                         }
