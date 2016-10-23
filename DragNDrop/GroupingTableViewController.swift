@@ -303,6 +303,11 @@ class GroupingTableViewController: UIViewController, UITableViewDataSource, UITa
                                         CellBeingMoved.cellSnapshot!.removeFromSuperview()
                                         CellBeingMoved.cellSnapshot = nil
                                         self.mainTableView.reloadData()
+                                        if let currentCount = (self.previousHighlightedFolderCell?.tableView.currentCount) {
+                                            self.previousHighlightedFolderCell?.tableView.currentCount = currentCount + 1
+                                        }
+                                        
+                                        
                                         self.previousHighlightedFolderCell?.tableView.reloadData()
                                         self.previousHighlightedFolderCell?.backgroundColor = UIColor.clear
                                     }
